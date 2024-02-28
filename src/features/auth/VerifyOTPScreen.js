@@ -27,12 +27,8 @@ export default function VerifyOTPScreen({ navigation }) {
         method: "post",
         url: `${process.env.DEV_API_URL}/users/verify-email-OTP`,
         data: {
-          codeOne: codeOne,
-          codeTwo: codeTwo,
-          codeThree: codeThree,
-          codeFour: codeFour,
-          codeFive: codeFive,
-          codeSix: codeSix,
+          emailOtp:
+            codeOne + codeTwo + codeThree + codeFour + codeFive + codeSix,
         },
         headers: {
           "Content-Type": "application/json",
