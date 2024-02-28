@@ -7,19 +7,20 @@ import {
   TouchableOpacity,
   View,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
-import { DEV_API_URL } from "@env";
 import axios from "axios";
 
 export default function UpdatePinScreen({ navigation }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [currentPin, setCurrentPin] = useState("");
   const [pin, setPin] = useState("");
   const [confirmPin, setConfirmPin] = useState("");
 
   async function handleUpdatePin() {
     try {
-      // setLoading(true)
-      console.log(email, process.env.DEV_API_URL);
+      setIsLoading(true);
+      // console.log(email, process.env.DEV_API_URL);
       const response = await axios({
         method: "post",
         url: `${process.env.DEV_API_URL}/users/update-pin`,
@@ -32,11 +33,11 @@ export default function UpdatePinScreen({ navigation }) {
           "Content-Type": "application/json",
         },
       });
-      // setLoading(false)
+      setIsLoading(false);
       if (!response) throw new Error("response not found");
       console.log(response);
     } catch (error) {
-      // setLoading(false)
+      setIsLoading(false);
       console.log(error);
       Alert.alert("Error", error.message, [{ text: "OK" }]);
     }
@@ -88,7 +89,13 @@ export default function UpdatePinScreen({ navigation }) {
           onPress={handleUpdatePin}
           activeOpacity={0.4}
         >
-          <Text style={styles.buttonText}>Done</Text>
+          {isLoading ? (
+            <View style={styles.horizontal}>
+              <ActivityIndicator />
+            </View>
+          ) : (
+            <Text style={styles.buttonText}>Done</Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>
@@ -171,5 +178,10 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 20,
+  },
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
   },
 });

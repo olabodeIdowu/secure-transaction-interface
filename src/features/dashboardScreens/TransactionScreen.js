@@ -20,11 +20,11 @@ export default function TransactionScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [filterWith, setFilterWith] = useState("date");
 
-  console.log(user, userId, transfer);
+  // console.log(user, userId, transfer);
   async function cancelTransaction(transferId) {
     try {
       setIsLoading(true);
-      console.log(transferId, process.env.DEV_API_URL);
+      // console.log(transferId, process.env.DEV_API_URL);
       const response = await axios({
         method: "patch",
         url: `${process.env.DEV_API_URL}/users/${userId}/transfers/${transferId}`,

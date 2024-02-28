@@ -7,17 +7,18 @@ import {
   TouchableOpacity,
   View,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
-import { DEV_API_URL } from "@env";
 import axios from "axios";
 
 export default function ForgotPinScreen({ navigation }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
 
   async function handleForgotPin() {
     try {
-      // setLoading(true)
-      console.log(email, process.env.DEV_API_URL);
+      setIsLoading(true);
+      // console.log(email, process.env.DEV_API_URL);
       const response = await axios({
         method: "post",
         url: `${process.env.DEV_API_URL}/users/forgot-pin`,
@@ -28,11 +29,12 @@ export default function ForgotPinScreen({ navigation }) {
           "Content-Type": "application/json",
         },
       });
-      // setLoading(false)
+
+      setIsLoading(false);
       if (!response) throw new Error("response not found");
       navigation.navigate("ResetPin");
     } catch (error) {
-      // setLoading(false)
+      setIsLoading(false);
       console.log(error);
       Alert.alert("Error", error.message, [{ text: "OK" }]);
     }
@@ -72,7 +74,13 @@ export default function ForgotPinScreen({ navigation }) {
           onPress={handleForgotPin}
           activeOpacity={0.4}
         >
-          <Text style={styles.buttonText}>Send</Text>
+          {isLoading ? (
+            <View style={styles.horizontal}>
+              <ActivityIndicator />
+            </View>
+          ) : (
+            <Text style={styles.buttonText}>Send</Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>
@@ -153,5 +161,10 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 20,
+  },
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
   },
 });

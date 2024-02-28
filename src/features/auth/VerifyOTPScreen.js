@@ -6,11 +6,12 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from "react-native";
-import { DEV_API_URL } from "@env";
 import axios from "axios";
 
 export default function VerifyOTPScreen({ navigation }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [codeOne, setCodeOne] = useState("");
   const [codeTwo, setCodeTwo] = useState("");
   const [codeThree, setCodeThree] = useState("");
@@ -20,8 +21,8 @@ export default function VerifyOTPScreen({ navigation }) {
 
   async function handleVerifyOTP() {
     try {
-      // setLoading(true)
-      console.log(email, process.env.DEV_API_URL);
+      setIsLoading(true);
+      // console.log(email, process.env.DEV_API_URL);
       const response = await axios({
         method: "post",
         url: `${process.env.DEV_API_URL}/users/verify-email-OTP`,
@@ -37,11 +38,11 @@ export default function VerifyOTPScreen({ navigation }) {
           "Content-Type": "application/json",
         },
       });
-      // setLoading(false)
+      setIsLoading(false);
       if (!response) throw new Error("response not found");
       navigation.navigate("Login");
     } catch (error) {
-      // setLoading(false)
+      setIsLoading(false);
       console.log(error);
       Alert.alert("Error", error.message, [{ text: "OK" }]);
     }
@@ -126,8 +127,15 @@ export default function VerifyOTPScreen({ navigation }) {
         onPress={handleVerifyOTP}
         activeOpacity={0.4}
       >
-        <Text style={styles.buttonText}>Verify</Text>
+        {isLoading ? (
+          <View style={styles.horizontal}>
+            <ActivityIndicator />
+          </View>
+        ) : (
+          <Text style={styles.buttonText}>Verify</Text>
+        )}
       </TouchableOpacity>
+
       <Text style={{ color: "#ffffff", padding: 30, textAlign: "center" }}>
         We send you code to your email john*****@gmail.com. You can check your
         inbox.
@@ -212,5 +220,10 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#222",
     fontSize: 20,
+  },
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
   },
 });

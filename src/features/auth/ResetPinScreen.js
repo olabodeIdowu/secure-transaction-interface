@@ -7,18 +7,20 @@ import {
   TouchableOpacity,
   View,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import { DEV_API_URL } from "@env";
 import axios from "axios";
 
 export default function ResetPinScreen({ navigation }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [emailOTP, setEmailOTP] = useState("");
   const [pin, setPin] = useState("");
   const [confirmPin, setConfirmPin] = useState("");
 
   async function handleResetPin() {
     try {
-      // setLoading(true)
+      setIsLoading(true);
       console.log(email, process.env.DEV_API_URL);
       const response = await axios({
         method: "post",
@@ -32,12 +34,12 @@ export default function ResetPinScreen({ navigation }) {
           "Content-Type": "application/json",
         },
       });
-      // setLoading(false)
+      setIsLoading(false);
       if (!response) throw new Error("response not found");
 
       navigation.navigate("Login");
     } catch (error) {
-      // setLoading(false)
+      setIsLoading(false);
       console.log(error);
       Alert.alert("Error", error.message, [{ text: "OK" }]);
     }
@@ -95,7 +97,13 @@ export default function ResetPinScreen({ navigation }) {
           onPress={handleResetPin}
           activeOpacity={0.4}
         >
-          <Text style={styles.buttonText}>Create</Text>
+          {isLoading ? (
+            <View style={styles.horizontal}>
+              <ActivityIndicator />
+            </View>
+          ) : (
+            <Text style={styles.buttonText}>Create</Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>
@@ -173,5 +181,10 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 20,
+  },
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
   },
 });
