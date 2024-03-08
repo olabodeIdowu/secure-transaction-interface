@@ -26,7 +26,7 @@ export default function RegisterScreen({ navigation }) {
 
   async function handleSignup() {
     try {
-      console.log(bank, process.env.DEV_API_URL);
+      // console.log(bank, process.env.DEV_API_URL);
       setIsLoading(true);
       const response = await axios({
         method: "post",
@@ -51,7 +51,7 @@ export default function RegisterScreen({ navigation }) {
       navigation.navigate("Login");
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
+      // console.log(error);
       Alert.alert("Error", error.message, [{ text: "OK" }]);
     }
   }

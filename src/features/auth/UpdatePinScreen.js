@@ -35,10 +35,11 @@ export default function UpdatePinScreen({ navigation }) {
       });
       setIsLoading(false);
       if (!response) throw new Error("response not found");
-      console.log(response);
+      // console.log(response);
+      navigation.navigate("Login");
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
+      // console.log(error);
       Alert.alert("Error", error.message, [{ text: "OK" }]);
     }
   }
@@ -79,7 +80,7 @@ export default function UpdatePinScreen({ navigation }) {
           <TextInput
             style={styles.input}
             onChangeText={(text) => setConfirmPin(text)}
-            value={pin}
+            value={confirmPin}
             placeholder="confirm pin"
           />
         </View>

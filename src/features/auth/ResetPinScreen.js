@@ -21,7 +21,6 @@ export default function ResetPinScreen({ navigation }) {
   async function handleResetPin() {
     try {
       setIsLoading(true);
-      console.log(email, process.env.DEV_API_URL);
       const response = await axios({
         method: "post",
         url: `${process.env.DEV_API_URL}/users/reset-pin`,
@@ -40,7 +39,7 @@ export default function ResetPinScreen({ navigation }) {
       navigation.navigate("Login");
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
+      // console.log(error);
       Alert.alert("Error", error.message, [{ text: "OK" }]);
     }
   }
@@ -87,7 +86,7 @@ export default function ResetPinScreen({ navigation }) {
           <TextInput
             style={styles.input}
             onChangeText={(text) => setConfirmPin(text)}
-            value={pin}
+            value={confirmPin}
             placeholder="confirm pin"
           />
         </View>

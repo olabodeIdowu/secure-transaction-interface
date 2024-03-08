@@ -12,7 +12,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { AuthContext } from "../../context/AuthProvider";
-import { DEV_API_URL } from "@env";
 
 export default function LoginScreen({ navigation }) {
   const { auth, setAuth } = useContext(AuthContext);
@@ -23,7 +22,7 @@ export default function LoginScreen({ navigation }) {
   async function handleLogin() {
     try {
       setIsLoading(true);
-      console.log(email, pin, process.env.DEV_API_URL);
+      // console.log(email, pin, process.env.DEV_API_URL);
       const response = await axios({
         method: "post",
         url: `${process.env.DEV_API_URL}/users/login`,
@@ -49,7 +48,7 @@ export default function LoginScreen({ navigation }) {
       navigation.navigate("Dashboard");
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
+      // console.log(error);
       Alert.alert("Error", error.message, [{ text: "OK" }]);
     }
   }

@@ -39,7 +39,7 @@ export default function VerifyOTPScreen({ navigation }) {
       navigation.navigate("Login");
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
+      // console.log(error);
       Alert.alert("Error", error.message, [{ text: "OK" }]);
     }
   }
